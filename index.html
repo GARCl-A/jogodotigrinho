@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo do Tigrinho</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+
+        h1 {
+            color: #ff4500;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .tile {
+            width: 100px;
+            height: 100px;
+            background-color: #ffd700;
+            border: 2px solid #ff8c00;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .tile:hover {
+            background-color: #ffa500;
+        }
+
+        .hidden {
+            visibility: hidden;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .play-again {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #32cd32;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .play-again:hover {
+            background-color: #228b22;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jogo do Tigrinho</h1>
+    <p>Escolha um bloco e veja se encontra o tigrinho!</p>
+
+    <div class="game-board">
+        <div class="tile" data-id="1"></div>
+        <div class="tile" data-id="2"></div>
+        <div class="tile" data-id="3"></div>
+        <div class="tile" data-id="4"></div>
+        <div class="tile" data-id="5"></div>
+        <div class="tile" data-id="6"></div>
+        <div class="tile" data-id="7"></div>
+        <div class="tile" data-id="8"></div>
+        <div class="tile" data-id="9"></div>
+    </div>
+
+    <div class="result"></div>
+    <button class="play-again hidden">Jogar novamente</button>
+
+    <script>
+        const tiles = document.querySelectorAll('.tile');
+        const result = document.querySelector('.result');
+        const playAgainButton = document.querySelector('.play-again');
+
+        let tigerPosition = Math.floor(Math.random() * 9) + 1;
+        let gameEnded = false;
+
+        tiles.forEach(tile => {
+            tile.addEventListener('click', () => {
+                if (gameEnded) return;
+
+                const selectedId = parseInt(tile.getAttribute('data-id'));
+
+                if (selectedId === tigerPosition) {
+                    tile.textContent = '🐯';
+                    result.textContent = 'Parabéns! Você encontrou o tigrinho!';
+                    result.style.color = 'green';
+                } else {
+                    tile.textContent = '❌';
+                    result.textContent = 'Não foi dessa vez! Tente novamente.';
+                    result.style.color = 'red';
+                }
+
+                gameEnded = true;
+                playAgainButton.classList.remove('hidden');
+            });
+        });
+
+        playAgainButton.addEventListener('click', () => {
+            tigerPosition = Math.floor(Math.random() * 9) + 1;
+            gameEnded = false;
+            result.textContent = '';
+            tiles.forEach(tile => tile.textContent = '');
+            playAgainButton.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
